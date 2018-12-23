@@ -9,9 +9,11 @@ services:
       args:
         ELK_VERSION: $ELK_VERSION
     ulimits:
-          memlock:
-            soft: -1
-            hard: -1
+      nproc: 65535
+      memlock:
+        soft: -1
+        hard: -1
+    privileged: true
     volumes:
       - ./node1/data:/usr/share/elasticsearch/data  
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
@@ -35,9 +37,10 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
     ulimits:
-          memlock:
-            soft: -1
-            hard: -1
+      nproc: 65535
+      memlock:
+        soft: -1
+        hard: -1
     networks:
       - elk
 
@@ -53,9 +56,10 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
     ulimits:
-          memlock:
-            soft: -1
-            hard: -1
+      nproc: 65535
+      memlock:
+        soft: -1
+        hard: -1
     networks:
       - elk
       
