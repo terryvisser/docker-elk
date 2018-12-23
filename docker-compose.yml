@@ -3,20 +3,62 @@ version: '2'
 services:
 
   elasticsearch:
+    container_name: es_master
     build:
       context: elasticsearch/
       args:
         ELK_VERSION: $ELK_VERSION
+    ulimits:
+          memlock:
+            soft: -1
+            hard: -1
     volumes:
+      - ./node1/data:/usr/share/elasticsearch/data  
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
     networks:
       - elk
 
+  elasticsearch2:
+    container_name: es_slave1
+    build:
+      context: elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - ./node2/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/es-slave.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+    ulimits:
+          memlock:
+            soft: -1
+            hard: -1
+    networks:
+      - elk
+
+  elasticsearch2:
+    container_name: es_slave2
+    build:
+      context: elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - ./node2/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/es-slave2.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+    ulimits:
+          memlock:
+            soft: -1
+            hard: -1
+    networks:
+      - elk
+      
   logstash:
     build:
       context: logstash/
