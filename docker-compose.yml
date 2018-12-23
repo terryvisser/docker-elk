@@ -9,40 +9,44 @@ services:
       args:
         ELK_VERSION: $ELK_VERSION
     ulimits:
-      nproc: 65535
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     privileged: true
     volumes:
-      - ./node1/data:/usr/share/elasticsearch/data  
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    - ./node1/data:/usr/share/elasticsearch/data
+    - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
-      - "9200:9200"
-      - "9300:9300"
+    - "9200:9200"
+    - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
     networks:
-      - elk
+    - elk
 
-  elasticsearch2:
+  elasticsearch1:
     container_name: es_slave1
     build:
       context: elasticsearch/
       args:
         ELK_VERSION: $ELK_VERSION
     volumes:
-      - ./node2/data:/usr/share/elasticsearch/data
-      - ./elasticsearch/config/es-slave.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    - ./node2/data:/usr/share/elasticsearch/data
+    - ./elasticsearch/config/es-slave.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
     ulimits:
-      nproc: 65535
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
-      - elk
+    - elk
 
   elasticsearch2:
     container_name: es_slave2
@@ -51,35 +55,37 @@ services:
       args:
         ELK_VERSION: $ELK_VERSION
     volumes:
-      - ./node2/data:/usr/share/elasticsearch/data
-      - ./elasticsearch/config/es-slave2.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    - ./node2/data:/usr/share/elasticsearch/data
+    - ./elasticsearch/config/es-slave2.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
     ulimits:
-      nproc: 65535
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
-      - elk
-      
+    - elk
+
   logstash:
     build:
       context: logstash/
       args:
         ELK_VERSION: $ELK_VERSION
     volumes:
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+    - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
     ports:
-      - "5000:5000"
-      - "9600:9600"
+    - "5000:5000"
+    - "9600:9600"
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
-      - elk
+    - elk
     depends_on:
-      - elasticsearch
+    - elasticsearch
 
   kibana:
     build:
@@ -87,13 +93,13 @@ services:
       args:
         ELK_VERSION: $ELK_VERSION
     volumes:
-      - ./kibana/config/:/usr/share/kibana/config:ro
+    - ./kibana/config/:/usr/share/kibana/config:ro
     ports:
-      - "5601:5601"
+    - "5601:5601"
     networks:
-      - elk
+    - elk
     depends_on:
-      - elasticsearch
+    - elasticsearch
 
 networks:
 
