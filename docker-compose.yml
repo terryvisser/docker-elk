@@ -74,7 +74,7 @@ services:
       args:
         ELK_VERSION: $ELK_VERSION
     volumes:
-    - ./node2/data:/usr/share/elasticsearch/data
+    - ./node3/data:/usr/share/elasticsearch/data
     - ./elasticsearch/config/es-slave2.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
