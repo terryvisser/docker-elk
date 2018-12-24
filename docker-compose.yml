@@ -1,4 +1,4 @@
-version: '3.6'
+version: '2'
 
 services:
 
@@ -8,16 +8,16 @@ services:
       context: elasticsearch/
       args:
         ELK_VERSION: $ELK_VERSION
-    cap_add:
-    - ALL
-    privileged: true
-    deploy:
-      mode: global
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+#    cap_add:
+#    - ALL
+#    privileged: true
+#    deploy:
+#      mode: global
+#      restart_policy:
+#        condition: on-failure
+#        delay: 5s
+#        max_attempts: 3
+#        window: 120s
     ulimits:
       memlock:
         soft: -1
@@ -47,16 +47,16 @@ services:
     - ./elasticsearch/config/es-slave.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
-    cap_add:
-    - ALL
-    privileged: true
-    deploy:
-      mode: global
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+#    cap_add:
+#    - ALL
+#    privileged: true
+#    deploy:
+#      mode: global
+#      restart_policy:
+#        condition: on-failure
+#        delay: 5s
+#        max_attempts: 3
+#        window: 120s
     ulimits:
       memlock:
         soft: -1
@@ -78,16 +78,16 @@ services:
     - ./elasticsearch/config/es-slave2.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     environment:
       ES_JAVA_OPTS: "-Xmx512m -Xms512m"
-    cap_add:
-    - ALL
-    privileged: true
-    deploy:
-      mode: global
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+#    cap_add:
+#    - ALL
+#    privileged: true
+#    deploy:
+#      mode: global
+#      restart_policy:
+#        condition: on-failure
+#        delay: 5s
+#        max_attempts: 3
+#        window: 120s
     ulimits:
       memlock:
         soft: -1
